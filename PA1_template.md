@@ -4,7 +4,7 @@ Reproducible Research: Peer Assessment 1
 
 ## Overview of the input data  
 This assignment makes use of data from a personal activity monitoring device, 
-that collected the data from anonymous individuals at 5 minute intervals 
+which collected the data from anonymous individuals at 5 minute intervals 
 throughout the day. The input data used for this analysis contains activity 
 data collected during a two month period (from October to November, 2012) from 
 a single individual and includes the number of steps taken during every 5-minute 
@@ -19,11 +19,11 @@ taken
 ## Additional information about the input data  
 * missing values are coded as NA  
 * there are a total of 17,568 observations  
-* the unzipped input data ("activity.zip") found in this assignment's GitHub
-repository should be placed into working directory  
+* the unzipped input data ("activity.zip") can be found in this assignment's 
+GitHub repository and should be placed into working directory  
 <br>  
 
-## Analysis of input activity data  
+## Analysis of the input activity data  
 Packages required for the analysis (ggplot2, plyr, and dplyr) are loaded into R  
 
 ```r
@@ -34,16 +34,16 @@ library(dplyr)
 <br>  
 
 ### **A) Loading and preprocessing the data**
-The unzipped data file (stored under variable name 'zipFileName') in the working
-directory is extracted into the same directory
+The unzipped data file (stored under a variable name 'zipFileName') in the 
+working directory is extracted into the same directory
 
 ```r
 zipFileName <- "activity.zip"
 unzip(zipFileName)
 ```
 
-The extracted data file (stored under variable name 'fileName') is loaded into R
-in a table format
+The extracted data file (stored under a variable name 'fileName') is loaded into 
+R in a table format
 
 ```r
 fileName <- "activity.csv"
@@ -52,20 +52,21 @@ activityData <- read.csv(fileName, colClasses = c("integer", "Date", "integer"))
 <br>  
 
 ### **B) What is the mean total number of steps taken per day?**
-Creating a histogram of total number of steps taken per day (missing values are ignored)
-
-```r
-qplot(date, data = activityData, geom = "histogram", weight = steps, 
-              binwidth = 1, xlab = "Date", ylab = "Total number of steps")
-```
-
-![plot of chunk plot1](figure/plot1-1.png) 
-
 Calculating the sum of steps taken per day (missing values are ignored)
 
 ```r
 totalsteps <- ddply(activityData, .(date), summarise, sum=sum(steps))
 ```
+
+Creating a frequency histogram of total number of steps taken per day 
+(missing values are ignored)
+
+```r
+qplot(sum, data = totalsteps, binwidth = 1000, xlab = "Total number of steps", 
+      ylab = "Number of days")
+```
+
+![plot of chunk plot1](figure/plot1-1.png) 
 
 Calculating the mean and median of total number of steps taken per day 
 (missing values are ignored)
@@ -92,7 +93,7 @@ interval
 
 ```r
 ggplot(averagesteps, aes(x = interval, y = average, group = 1)) + 
-    geom_line() + labs(x = "interval", y = "Average number of steps")
+    geom_line() + labs(x = "Interval", y = "Average number of steps")
 ```
 
 ![plot of chunk plot2](figure/plot2-1.png) 
@@ -135,20 +136,21 @@ for (row in 1:nrow(imputedData)) {
 }
 ```
 
-Creating a histogram of total steps taken per day (with imputed values)
-
-```r
-qplot(date, data = imputedData, geom = "histogram", weight = steps, 
-      binwidth = 1, xlab = "Date", ylab = "Total number of steps")
-```
-
-![plot of chunk plot3](figure/plot3-1.png) 
-
 Calculating the sum of steps taken per day (with imputed values)
 
 ```r
 totalstepsimputed <- ddply(imputedData, .(date), summarise, sum=sum(steps)) 
 ```
+
+Creating a frequency histogram of total number of steps taken per day 
+(with imputed values)
+
+```r
+qplot(sum, data = totalstepsimputed, binwidth = 1000, xlab = "Total number of steps", 
+      ylab = "Number of days")
+```
+
+![plot of chunk plot3](figure/plot3-1.png) 
 
 Calculating the mean and median of total number of steps taken per day (with 
 imputed values)
@@ -161,7 +163,7 @@ mediantotalstepsimputed <- median(totalstepsimputed$sum)
 **The median number of steps taken per day (considering the missing values have been replaced) is 1.0762 &times; 10<sup>4</sup>**  
 <br>
 
-**Please note, that replacing the missing values decreases these results showing, that the original values were biased**  
+**Please note, replacing the missing values decreases these results indicating that the original values were biased**  
 <br>
 
 ### **E) Are there differences in activity patterns between weekdays and weekends?**
@@ -191,7 +193,7 @@ of steps taken per 5-minute interval (averaged across weekday or weekend days)
 ```r
 averagestepsimputed <- ddply(imputedData, .(interval, timeofweek), summarise, average=mean(steps))
 ggplot(averagestepsimputed, aes(x = interval, y = average)) + 
-    geom_line() + labs(x = "interval", y = "Average number of steps") + 
+    geom_line() + labs(x = "Interval", y = "Average number of steps") + 
     facet_grid(timeofweek ~ .)
 ```
 
